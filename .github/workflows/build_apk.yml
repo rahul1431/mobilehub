@@ -27,14 +27,12 @@ jobs:
           
       - name: Install dependencies
         run: flutter pub get
-        working-directory: ./mobile_hub # Adjust this if you push ONLY the mobile folder
 
       - name: Build APK
         run: flutter build apk --release
-        working-directory: ./mobile_hub # Adjust this if you push ONLY the mobile folder
 
       - name: Upload APK
         uses: actions/upload-artifact@v3
         with:
           name: release-apk
-          path: mobile_hub/build/app/outputs/flutter-apk/app-release.apk
+          path: build/app/outputs/flutter-apk/app-release.apk
