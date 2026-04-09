@@ -27,8 +27,14 @@ jobs:
           flutter-version: '3.13.0'
           channel: 'stable'
 
-      - name: Generate Project Wrappers
-        run: flutter create . --platforms android --overwrite
+      - name: Generate Android Project Wrappers (Safe Mode)
+        run: |
+          mkdir temp_gen
+          cd temp_gen
+          flutter create --platforms android --project-name alpha_hub_mobile .
+          cp -r android ../
+          cd ..
+          rm -rf temp_gen
           
       - name: Install dependencies
         run: flutter pub get
