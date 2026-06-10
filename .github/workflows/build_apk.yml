@@ -2,9 +2,10 @@ name: Build Flutter APK
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ "main", "master", "claude/mobile-binance-auto-trading-xr0ulw" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
