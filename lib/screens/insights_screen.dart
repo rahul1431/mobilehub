@@ -30,7 +30,7 @@ class InsightsScreen extends StatelessWidget {
             children: [
               const Padding(
                 padding: EdgeInsets.all(24),
-                child: Text("Alpha Insights", style: TextStyle(fontSize: 24, fontWeight: FontWeight.black, color: Colors.white)),
+                child: Text("Alpha Insights", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: Colors.white)),
               ),
               Expanded(
                 child: ListView.builder(

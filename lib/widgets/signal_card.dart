@@ -41,7 +41,7 @@ class SignalCard extends StatelessWidget {
           const SizedBox(height: 12),
           Text(
             signal.symbol,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.black, color: Colors.white),
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Colors.white),
           ),
           const SizedBox(height: 4),
           Text(

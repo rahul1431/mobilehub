@@ -39,7 +39,7 @@ class DashboardScreen extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("Alpha Hub Mobile", style: TextStyle(fontSize: 24, fontWeight: FontWeight.black, color: Colors.white)),
+            const Text("Alpha Hub Mobile", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: Colors.white)),
             Text("Probing Market Pulse...", style: TextStyle(color: AppTheme.textMuted, fontSize: 13, fontWeight: FontWeight.w600)),
           ],
         ),
@@ -77,7 +77,7 @@ class DashboardScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(color: AppTheme.success.withOpacity(0.1), borderRadius: BorderRadius.circular(6)),
-              child: const Text("DAILY", style: TextStyle(color: AppTheme.success, fontSize: 10, fontWeight: FontWeight.black)),
+              child: const Text("DAILY", style: TextStyle(color: AppTheme.success, fontSize: 10, fontWeight: FontWeight.w900)),
             )
           ],
         ),
