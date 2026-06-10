@@ -23,6 +23,7 @@ class _BotSettingsScreenState extends State<BotSettingsScreen> {
   double _positionSizePct = 10.0;
   double _stopLossPct = 2.0;
   double _takeProfitPct = 4.0;
+  int _confidenceThreshold = 75;
   List<String> _selectedPairs = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT'];
   bool _isSaving = false;
 
@@ -46,6 +47,7 @@ class _BotSettingsScreenState extends State<BotSettingsScreen> {
     _positionSizePct = cfg.positionSizePct;
     _stopLossPct = cfg.stopLossPct;
     _takeProfitPct = cfg.takeProfitPct;
+    _confidenceThreshold = cfg.confidenceThreshold;
     _selectedPairs = List.from(cfg.tradingPairs);
   }
 
@@ -61,6 +63,7 @@ class _BotSettingsScreenState extends State<BotSettingsScreen> {
       stopLossPct: _stopLossPct,
       takeProfitPct: _takeProfitPct,
       useTestnet: _useTestnet,
+      confidenceThreshold: _confidenceThreshold,
     );
 
     final prefs = await SharedPreferences.getInstance();
@@ -144,6 +147,10 @@ class _BotSettingsScreenState extends State<BotSettingsScreen> {
                           _divider(),
                           _slider('Take Profit', '${_takeProfitPct.toStringAsFixed(1)}%', _takeProfitPct, 1, 20,
                               (v) => setState(() => _takeProfitPct = v), color: AppTheme.success, divisions: 19),
+                          _divider(),
+                          _slider('AI Confidence Min', '$_confidenceThreshold%', _confidenceThreshold.toDouble(), 50, 95,
+                              (v) => setState(() => _confidenceThreshold = v.round()),
+                              color: AppTheme.accent, divisions: 45),
                         ],
                       ),
                     ),
@@ -167,9 +174,19 @@ class _BotSettingsScreenState extends State<BotSettingsScreen> {
                     GlassCard(
                       child: Column(
                         children: [
-                          _infoRow(Icons.show_chart_rounded, 'EMA Crossover', 'EMA(9) crosses EMA(21) on 1h candles'),
+                          _infoRow(Icons.show_chart_rounded, 'EMA 9/21 Crossover', '15 pts — Golden/death cross entry signal'),
                           _divider(),
-                          _infoRow(Icons.analytics_rounded, 'RSI Filter', 'RSI(14) prevents entering overbought/oversold zones'),
+                          _infoRow(Icons.trending_up_rounded, 'EMA 50 Trend', '10 pts — Medium-term trend filter'),
+                          _divider(),
+                          _infoRow(Icons.analytics_rounded, 'RSI(14)', '15 pts — Momentum confirmation'),
+                          _divider(),
+                          _infoRow(Icons.swap_horiz_rounded, 'MACD(12,26,9)', '20 pts — Primary momentum signal'),
+                          _divider(),
+                          _infoRow(Icons.compress_rounded, 'Bollinger Bands(20)', '10 pts — Volatility context'),
+                          _divider(),
+                          _infoRow(Icons.bar_chart_rounded, 'Volume', '10 pts — Volume surge confirmation'),
+                          _divider(),
+                          _infoRow(Icons.stacked_line_chart_rounded, 'StochRSI(14)', '15 pts — Short-term momentum'),
                           _divider(),
                           _infoRow(Icons.timer_rounded, 'Scan Interval', 'Markets scanned every 5 minutes'),
                           _divider(),

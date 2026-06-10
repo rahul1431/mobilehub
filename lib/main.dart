@@ -4,6 +4,8 @@ import 'core/app_theme.dart';
 import 'screens/dashboard_screen.dart';
 import 'screens/insights_screen.dart';
 import 'screens/ledger_screen.dart';
+import 'screens/news_screen.dart';
+import 'screens/profile_screen.dart';
 import 'screens/trade_screen.dart';
 import 'services/notification_service.dart';
 import 'services/auto_trade_service.dart';
@@ -47,11 +49,13 @@ class MainNavigation extends StatefulWidget {
 class _MainNavigationState extends State<MainNavigation> {
   int _selectedIndex = 0;
 
-  final List<Widget> _screens = [
-    const DashboardScreen(),
-    const InsightsScreen(),
-    const TradeScreen(),
-    const LedgerScreen(),
+  final List<Widget> _screens = const [
+    DashboardScreen(),
+    InsightsScreen(),
+    TradeScreen(),
+    NewsScreen(),
+    LedgerScreen(),
+    ProfileScreen(),
   ];
 
   @override
@@ -72,11 +76,13 @@ class _MainNavigationState extends State<MainNavigation> {
           selectedItemColor: AppTheme.primary,
           unselectedItemColor: AppTheme.textMuted,
           type: BottomNavigationBarType.fixed,
-          selectedFontSize: 10,
-          unselectedFontSize: 10,
+          selectedFontSize: 9,
+          unselectedFontSize: 9,
           items: [
-            const BottomNavigationBarItem(icon: Icon(Icons.dashboard_rounded), label: 'HUB'),
-            const BottomNavigationBarItem(icon: Icon(Icons.analytics_rounded), label: 'INSIGHTS'),
+            const BottomNavigationBarItem(
+                icon: Icon(Icons.dashboard_rounded), label: 'HUB'),
+            const BottomNavigationBarItem(
+                icon: Icon(Icons.analytics_rounded), label: 'SIGNALS'),
             BottomNavigationBarItem(
               icon: Consumer<AutoTradeService>(
                 builder: (_, svc, __) => Stack(
@@ -93,7 +99,11 @@ class _MainNavigationState extends State<MainNavigation> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: AppTheme.success,
-                            boxShadow: [BoxShadow(color: AppTheme.success.withOpacity(0.6), blurRadius: 4)],
+                            boxShadow: [
+                              BoxShadow(
+                                  color: AppTheme.success.withOpacity(0.6),
+                                  blurRadius: 4)
+                            ],
                           ),
                         ),
                       ),
@@ -102,7 +112,12 @@ class _MainNavigationState extends State<MainNavigation> {
               ),
               label: 'TRADE',
             ),
-            const BottomNavigationBarItem(icon: Icon(Icons.history_rounded), label: 'LEDGER'),
+            const BottomNavigationBarItem(
+                icon: Icon(Icons.newspaper_rounded), label: 'NEWS'),
+            const BottomNavigationBarItem(
+                icon: Icon(Icons.history_rounded), label: 'LEDGER'),
+            const BottomNavigationBarItem(
+                icon: Icon(Icons.person_rounded), label: 'PROFILE'),
           ],
         ),
       ),

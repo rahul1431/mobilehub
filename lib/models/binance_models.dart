@@ -107,6 +107,7 @@ class TradeConfig {
   final double stopLossPct;
   final double takeProfitPct;
   final bool useTestnet;
+  final int confidenceThreshold;
 
   const TradeConfig({
     required this.apiKey,
@@ -117,6 +118,7 @@ class TradeConfig {
     required this.stopLossPct,
     required this.takeProfitPct,
     required this.useTestnet,
+    this.confidenceThreshold = 75,
   });
 
   factory TradeConfig.defaults() => const TradeConfig(
@@ -128,6 +130,7 @@ class TradeConfig {
         stopLossPct: 2.0,
         takeProfitPct: 4.0,
         useTestnet: true,
+        confidenceThreshold: 75,
       );
 
   TradeConfig copyWith({
@@ -139,6 +142,7 @@ class TradeConfig {
     double? stopLossPct,
     double? takeProfitPct,
     bool? useTestnet,
+    int? confidenceThreshold,
   }) {
     return TradeConfig(
       apiKey: apiKey ?? this.apiKey,
@@ -149,6 +153,7 @@ class TradeConfig {
       stopLossPct: stopLossPct ?? this.stopLossPct,
       takeProfitPct: takeProfitPct ?? this.takeProfitPct,
       useTestnet: useTestnet ?? this.useTestnet,
+      confidenceThreshold: confidenceThreshold ?? this.confidenceThreshold,
     );
   }
 
@@ -161,6 +166,7 @@ class TradeConfig {
         'stopLossPct': stopLossPct,
         'takeProfitPct': takeProfitPct,
         'useTestnet': useTestnet,
+        'confidenceThreshold': confidenceThreshold,
       };
 
   factory TradeConfig.fromJson(Map<String, dynamic> j) {
@@ -173,11 +179,28 @@ class TradeConfig {
       stopLossPct: (j['stopLossPct'] ?? 2.0).toDouble(),
       takeProfitPct: (j['takeProfitPct'] ?? 4.0).toDouble(),
       useTestnet: j['useTestnet'] ?? true,
+      confidenceThreshold: j['confidenceThreshold'] ?? 75,
     );
   }
 }
 
 enum TradeSignalType { buy, sell, neutral }
+
+class IndicatorResult {
+  final String name;
+  final String verdict; // 'BULL', 'BEAR', 'NEUTRAL'
+  final int score;
+  final int maxScore;
+  final String detail;
+
+  const IndicatorResult({
+    required this.name,
+    required this.verdict,
+    required this.score,
+    required this.maxScore,
+    required this.detail,
+  });
+}
 
 class TradeSignal {
   final String symbol;
@@ -185,16 +208,86 @@ class TradeSignal {
   final double price;
   final double ema9;
   final double ema21;
+  final double ema50;
   final double rsi;
+  final double macdLine;
+  final double macdSignalLine;
+  final double macdHist;
+  final double bbUpper;
+  final double bbLower;
+  final double bbMid;
+  final double stochRsi;
+  final double volumeRatio;
+  final int confidence;
+  final List<IndicatorResult> indicators;
+  final DateTime timestamp;
 
-  const TradeSignal({
+  TradeSignal({
     required this.symbol,
     required this.type,
     required this.price,
-    required this.ema9,
-    required this.ema21,
-    required this.rsi,
+    required this.confidence,
+    required this.indicators,
+    this.ema9 = 0,
+    this.ema21 = 0,
+    this.ema50 = 0,
+    this.rsi = 50,
+    this.macdLine = 0,
+    this.macdSignalLine = 0,
+    this.macdHist = 0,
+    this.bbUpper = 0,
+    this.bbLower = 0,
+    this.bbMid = 0,
+    this.stochRsi = 50,
+    this.volumeRatio = 1.0,
+    DateTime? timestamp,
+  }) : timestamp = timestamp ?? DateTime.now();
+}
+
+class CryptoNews {
+  final String id;
+  final String title;
+  final String body;
+  final String sourceName;
+  final String sourceIcon;
+  final String imageUrl;
+  final String url;
+  final DateTime publishedAt;
+  final String categories;
+
+  const CryptoNews({
+    required this.id,
+    required this.title,
+    required this.body,
+    required this.sourceName,
+    required this.sourceIcon,
+    required this.imageUrl,
+    required this.url,
+    required this.publishedAt,
+    required this.categories,
   });
+
+  factory CryptoNews.fromJson(Map<String, dynamic> j) {
+    final ts = j['published_on'] ?? 0;
+    return CryptoNews(
+      id: j['id']?.toString() ?? '',
+      title: j['title'] ?? '',
+      body: j['body'] ?? '',
+      sourceName: j['source_info']?['name'] ?? j['source'] ?? 'Unknown',
+      sourceIcon: j['source_info']?['img'] ?? '',
+      imageUrl: j['imageurl'] ?? '',
+      url: j['url'] ?? '',
+      publishedAt: DateTime.fromMillisecondsSinceEpoch((ts as int) * 1000),
+      categories: j['categories'] ?? '',
+    );
+  }
+
+  String get timeAgo {
+    final diff = DateTime.now().difference(publishedAt);
+    if (diff.inMinutes < 60) return '${diff.inMinutes}m ago';
+    if (diff.inHours < 24) return '${diff.inHours}h ago';
+    return '${diff.inDays}d ago';
+  }
 }
 
 class TradeLog {

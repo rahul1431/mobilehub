@@ -79,7 +79,7 @@ class _TradeScreenState extends State<TradeScreen> {
                 const Text('Auto Trader',
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: Colors.white)),
                 Text(
-                  'Binance Futures • ${svc.config.leverage}x • EMA(9/21) + RSI(14)',
+                  'Binance Futures • ${svc.config.leverage}x • 8 Indicators • ${svc.config.confidenceThreshold}%+ confidence',
                   style: const TextStyle(color: AppTheme.textMuted, fontSize: 11, fontWeight: FontWeight.w600),
                 ),
               ],
@@ -186,7 +186,7 @@ class _TradeScreenState extends State<TradeScreen> {
     final cfg = svc.config;
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 6),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.04),
         borderRadius: BorderRadius.circular(14),
@@ -199,6 +199,7 @@ class _TradeScreenState extends State<TradeScreen> {
           _cfgItem(Icons.pie_chart_outline_rounded, '${cfg.positionSizePct.toStringAsFixed(0)}%', 'POS SIZE', AppTheme.primary),
           _cfgItem(Icons.shield_outlined, '${cfg.stopLossPct}%', 'STOP LOSS', AppTheme.danger),
           _cfgItem(Icons.flag_outlined, '${cfg.takeProfitPct}%', 'TAKE PROFIT', AppTheme.success),
+          _cfgItem(Icons.psychology_rounded, '${cfg.confidenceThreshold}%', 'MIN CONF', AppTheme.accent),
           _cfgItem(
             cfg.useTestnet ? Icons.science_outlined : Icons.public_rounded,
             cfg.useTestnet ? 'TEST' : 'LIVE',
