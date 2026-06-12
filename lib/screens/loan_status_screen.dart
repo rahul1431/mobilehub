@@ -58,8 +58,8 @@ class _LoanDetailCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(14),
-        boxShadow: const [
-          BoxShadow(color: Colors.black08, blurRadius: 5, offset: Offset(0, 2))
+        boxShadow: [
+          BoxShadow(color: Colors.black.withOpacity(0.08), blurRadius: 5, offset: Offset(0, 2))
         ],
       ),
       child: Column(

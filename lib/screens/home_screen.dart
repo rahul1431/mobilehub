@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import '../core/app_theme.dart';
 import '../models/models.dart';
 import 'package:intl/intl.dart';
@@ -184,18 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 const SizedBox(height: 16),
                 // Promo Banners
-                CarouselSlider(
-                  options: CarouselOptions(
-                    height: 150,
-                    autoPlay: true,
-                    enlargeCenterPage: true,
-                    viewportFraction: 0.9,
-                    autoPlayInterval: const Duration(seconds: 4),
-                  ),
-                  items: _banners
-                      .map((b) => _PromoBanner(data: b))
-                      .toList(),
-                ),
+                _BannerCarousel(banners: _banners),
                 const SizedBox(height: 20),
                 // Quick Actions
                 Padding(
@@ -315,6 +303,74 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
         ],
       ),
+    );
+  }
+}
+
+class _BannerCarousel extends StatefulWidget {
+  final List<_BannerData> banners;
+  const _BannerCarousel({required this.banners});
+
+  @override
+  State<_BannerCarousel> createState() => _BannerCarouselState();
+}
+
+class _BannerCarouselState extends State<_BannerCarousel> {
+  final _controller = PageController(viewportFraction: 0.92);
+  int _current = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.doWhile(() async {
+      await Future.delayed(const Duration(seconds: 4));
+      if (!mounted) return false;
+      final next = (_current + 1) % widget.banners.length;
+      _controller.animateToPage(next,
+          duration: const Duration(milliseconds: 400), curve: Curves.easeInOut);
+      return true;
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 150,
+          child: PageView.builder(
+            controller: _controller,
+            itemCount: widget.banners.length,
+            onPageChanged: (i) => setState(() => _current = i),
+            itemBuilder: (_, i) => Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: _PromoBanner(data: widget.banners[i]),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(widget.banners.length, (i) {
+            return AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              margin: const EdgeInsets.symmetric(horizontal: 3),
+              width: _current == i ? 20 : 6,
+              height: 6,
+              decoration: BoxDecoration(
+                color: _current == i ? AppColors.primary : AppColors.divider,
+                borderRadius: BorderRadius.circular(3),
+              ),
+            );
+          }),
+        ),
+      ],
     );
   }
 }
@@ -546,9 +602,9 @@ class _ServiceCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(14),
-          boxShadow: const [
+          boxShadow: [
             BoxShadow(
-                color: Colors.black08, blurRadius: 6, offset: Offset(0, 2))
+                color: Colors.black.withOpacity(0.08), blurRadius: 6, offset: Offset(0, 2))
           ],
         ),
         child: Column(
@@ -593,9 +649,9 @@ class _TransactionTile extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
-              color: Colors.black08, blurRadius: 4, offset: Offset(0, 2))
+              color: Colors.black.withOpacity(0.08), blurRadius: 4, offset: Offset(0, 2))
         ],
       ),
       child: Row(

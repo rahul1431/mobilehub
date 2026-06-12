@@ -175,9 +175,9 @@ class _DigitalGoldScreenState extends State<DigitalGoldScreen>
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(14),
-              boxShadow: const [
+              boxShadow: [
                 BoxShadow(
-                    color: Colors.black08,
+                    color: Colors.black.withOpacity(0.08),
                     blurRadius: 6,
                     offset: Offset(0, 2))
               ],
@@ -200,9 +200,9 @@ class _DigitalGoldScreenState extends State<DigitalGoldScreen>
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(14),
-              boxShadow: const [
+              boxShadow: [
                 BoxShadow(
-                    color: Colors.black08,
+                    color: Colors.black.withOpacity(0.08),
                     blurRadius: 6,
                     offset: Offset(0, 2))
               ],
