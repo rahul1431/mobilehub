@@ -80,29 +80,35 @@ class ProfileScreen extends StatelessWidget {
                       offset: Offset(0, 2))
                 ],
               ),
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.credit_card,
-                      color: AppColors.primary, size: 28),
-                  const SizedBox(width: 14),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Customer ID',
-                          style: TextStyle(
-                              fontSize: 12, color: AppColors.textGrey)),
-                      const SizedBox(height: 2),
-                      Text(
-                        user.customerId,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.textDark,
-                          letterSpacing: 1,
-                        ),
-                      ),
-                    ],
-                  ),
+                  Row(children: [
+                    const Icon(Icons.credit_card, color: AppColors.primary, size: 20),
+                    const SizedBox(width: 10),
+                    Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      const Text('Customer ID', style: TextStyle(fontSize: 11, color: AppColors.textGrey)),
+                      Text(user.customerId, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.textDark, letterSpacing: 0.5)),
+                    ]),
+                  ]),
+                  const Divider(height: 16),
+                  Row(children: [
+                    const Icon(Icons.badge_outlined, color: AppColors.primary, size: 20),
+                    const SizedBox(width: 10),
+                    Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      const Text('CRM Code', style: TextStyle(fontSize: 11, color: AppColors.textGrey)),
+                      Text(user.crmCode, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.textDark)),
+                    ]),
+                  ]),
+                  const Divider(height: 16),
+                  Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    const Icon(Icons.location_on_outlined, color: AppColors.primary, size: 20),
+                    const SizedBox(width: 10),
+                    Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      const Text('Address', style: TextStyle(fontSize: 11, color: AppColors.textGrey)),
+                      Text(user.address, style: const TextStyle(fontSize: 12, color: AppColors.textDark, height: 1.5)),
+                    ])),
+                  ]),
                 ],
               ),
             ),

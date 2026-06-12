@@ -91,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text(
-                                  'Hello, Rahul 👋',
+                                  'Hello, Ranjith Rathod 👋',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 18,
@@ -100,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 const SizedBox(height: 2),
                                 Text(
-                                  'Customer ID: MF20241234',
+                                  'Customer ID: 00878000011347',
                                   style: TextStyle(
                                     color: Colors.white.withOpacity(0.75),
                                     fontSize: 12,
@@ -565,7 +565,7 @@ class _LoanCard extends StatelessWidget {
           ),
           const Spacer(),
           Text(
-            'Due in $daysLeft days',
+            daysLeft > 90 ? 'No EMI Due' : 'Due in $daysLeft days',
             style: const TextStyle(
                 color: AppColors.gold, fontSize: 11),
           ),

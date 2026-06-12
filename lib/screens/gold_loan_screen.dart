@@ -307,7 +307,7 @@ class _ActiveLoanCard extends StatelessWidget {
               _loanStat('Outstanding',
                   '₹${fmt.format(loan.outstandingAmount)}'),
               const SizedBox(width: 24),
-              _loanStat('Gold Weight', '${loan.goldWeight}g'),
+              _loanStat('Net Weight', '${loan.netWeight}g'),
             ],
           ),
           const SizedBox(height: 14),
@@ -322,9 +322,11 @@ class _ActiveLoanCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Due in $daysLeft days',
-                  style: const TextStyle(
-                      fontSize: 11, color: AppColors.warning)),
+              Text(
+                  daysLeft > 90 ? 'No EMI Due' : 'Due in $daysLeft days',
+                  style: TextStyle(
+                      fontSize: 11,
+                      color: daysLeft > 90 ? AppColors.success : AppColors.warning)),
               GestureDetector(
                 onTap: () {},
                 child: const Text('Pay EMI →',

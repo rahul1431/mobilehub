@@ -18,7 +18,7 @@ class _ApplyLoanScreenState extends State<ApplyLoanScreen> {
   final _amountController = TextEditingController(text: '50000');
 
   // Step 2
-  final _nameController = TextEditingController(text: 'Rahul Kumar');
+  final _nameController = TextEditingController(text: 'Pathloth Ranjith Rathod');
   final _dobController = TextEditingController(text: '01/01/1990');
   final _panController = TextEditingController();
   String? _idType = 'Aadhaar Card';

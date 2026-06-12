@@ -89,20 +89,36 @@ class _LoanDetailCard extends StatelessWidget {
             ],
           ),
           const Divider(height: 20),
+          _row('Scheme', loan.scheme),
           _row('Loan Amount', '₹${fmt.format(loan.amount)}'),
+          _row('Eligible Amount', '₹${fmt.format(loan.eligibleAmount)}'),
           _row('Outstanding', '₹${fmt.format(loan.outstandingAmount)}'),
-          _row('Gold Weight', '${loan.goldWeight}g'),
+          _row('Net Gold Weight', '${loan.netWeight}g'),
+          _row('Gross Weight', '${loan.grossWeight}g'),
           _row('Interest Rate', '${loan.interestRate}% p.a.'),
-          _row('Due Date',
-              DateFormat('dd MMM yyyy').format(loan.dueDate)),
+          _row('Eff. Annual Rate', '${loan.annualizedRate}%'),
+          _row('Sanction Date', DateFormat('dd MMM yyyy').format(loan.sanctionDate)),
+          _row('Due Date', DateFormat('dd MMM yyyy').format(loan.dueDate)),
+          _row('Payment Mode', loan.paymentMode),
+          const SizedBox(height: 14),
+          const Text('Pledged Gold Items',
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13, color: AppColors.textDark)),
+          const SizedBox(height: 8),
+          ...loan.ornaments.map((o) => _ornamentRow(o)),
           const SizedBox(height: 12),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 12)),
-              child: const Text('Pay EMI'),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+            decoration: BoxDecoration(
+              color: AppColors.success.withOpacity(0.08),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: AppColors.success.withOpacity(0.3)),
+            ),
+            child: const Row(
+              children: [
+                Icon(Icons.check_circle, color: AppColors.success, size: 16),
+                SizedBox(width: 8),
+                Text('No EMI Due', style: TextStyle(color: AppColors.success, fontWeight: FontWeight.w600, fontSize: 13)),
+              ],
             ),
           ),
         ],
@@ -116,14 +132,30 @@ class _LoanDetailCard extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label,
-              style: const TextStyle(
-                  fontSize: 13, color: AppColors.textGrey)),
-          Text(value,
-              style: const TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.textDark)),
+          Text(label, style: const TextStyle(fontSize: 12, color: AppColors.textGrey)),
+          Flexible(
+            child: Text(value,
+                textAlign: TextAlign.right,
+                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.textDark)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _ornamentRow(GoldOrnament o) {
+    final fmt = NumberFormat('#,##,###', 'en_IN');
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: [
+          const Icon(Icons.diamond_outlined, size: 14, color: AppColors.gold),
+          const SizedBox(width: 8),
+          Expanded(child: Text('${o.name} (${o.count})', style: const TextStyle(fontSize: 12, color: AppColors.textDark))),
+          Text('${o.netWeight}g', style: const TextStyle(fontSize: 12, color: AppColors.textGrey)),
+          const SizedBox(width: 12),
+          Text('₹${fmt.format(o.eligibleAmount.round())}',
+              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.primary)),
         ],
       ),
     );
