@@ -208,7 +208,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 20),
                 // Active Loans
                 if (MockData.loans.isNotEmpty) ...[
-                  _sectionHeader('Active Loans', 'View All', () {}),
+                  _sectionHeader('Active Loans', 'View All',
+                      () => Navigator.pushNamed(context, '/loan-status')),
                   SizedBox(
                     height: 130,
                     child: ListView.separated(
@@ -217,8 +218,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemCount: MockData.loans.length,
                       separatorBuilder: (_, __) =>
                           const SizedBox(width: 12),
-                      itemBuilder: (_, i) =>
-                          _LoanCard(loan: MockData.loans[i]),
+                      itemBuilder: (_, i) => GestureDetector(
+                        onTap: () => Navigator.pushNamed(context, '/loan-status'),
+                        child: _LoanCard(loan: MockData.loans[i]),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
