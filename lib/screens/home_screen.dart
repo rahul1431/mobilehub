@@ -68,6 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
             expandedHeight: 130,
             floating: false,
             pinned: true,
+            automaticallyImplyLeading: false,
             backgroundColor: AppColors.primary,
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
@@ -168,7 +169,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            title: const Text('iMuthoot'),
             actions: [
               IconButton(
                 icon: const Icon(Icons.notifications_outlined),
