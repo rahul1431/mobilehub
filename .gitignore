@@ -1,0 +1,21 @@
+# Flutter/Dart build outputs
+build/
+.dart_tool/flutter_build/
+
+# Android Gradle caches
+android/.gradle/
+android/local.properties
+
+# Dart tool cache (keep package_config and version)
+.dart_tool/flutter_build/
+
+# iOS
+ios/.symlinks/
+ios/Pods/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+
+# Misc
+*.iml
+*.log
+.DS_Store
