@@ -1,7 +1,6 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.yoghub.alpha_hub_mobile">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
    <application
-        android:label="Alpha Hub"
+        android:label="iMuthoot"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

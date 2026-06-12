@@ -1,68 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'core/app_theme.dart';
-import 'screens/dashboard_screen.dart';
-import 'screens/insights_screen.dart';
-import 'screens/ledger_screen.dart';
-import 'services/notification_service.dart';
+import 'screens/splash_screen.dart';
+import 'screens/onboarding_screen.dart';
+import 'screens/login_screen.dart';
+import 'screens/otp_screen.dart';
+import 'screens/main_navigation.dart';
+import 'screens/gold_loan_screen.dart';
+import 'screens/apply_loan_screen.dart';
+import 'screens/emi_calculator_screen.dart';
+import 'screens/loan_status_screen.dart';
+import 'screens/digital_gold_screen.dart';
+import 'screens/profile_screen.dart';
+import 'screens/notifications_screen.dart';
+import 'screens/branches_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  LocalNotificationService.initialize();
-  runApp(const AlphaHubApp());
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+    statusBarIconBrightness: Brightness.light,
+  ));
+  runApp(const IMuthootApp());
 }
 
-class AlphaHubApp extends StatelessWidget {
-  const AlphaHubApp({super.key});
+class IMuthootApp extends StatelessWidget {
+  const IMuthootApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Alpha Hub Mobile',
+      title: 'iMuthoot',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.darkTheme,
-      home: const MainNavigation(),
-    );
-  }
-}
-
-class MainNavigation extends StatefulWidget {
-  const MainNavigation({super.key});
-
-  @override
-  State<MainNavigation> createState() => _MainNavigationState();
-}
-
-class _MainNavigationState extends State<MainNavigation> {
-  int _selectedIndex = 0;
-
-  final List<Widget> _screens = [
-    const DashboardScreen(),
-    const InsightsScreen(),
-    const LedgerScreen(),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: _screens[_selectedIndex],
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          border: Border(top: BorderSide(color: Colors.white.withOpacity(0.05))),
-        ),
-        child: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          onTap: (index) => setState(() => _selectedIndex = index),
-          backgroundColor: AppTheme.bgMain,
-          selectedItemColor: AppTheme.primary,
-          unselectedItemColor: AppTheme.textMuted,
-          type: BottomNavigationBarType.fixed,
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.dashboard_rounded), label: 'HUB'),
-            BottomNavigationBarItem(icon: Icon(Icons.analytics_rounded), label: 'INSIGHTS'),
-            BottomNavigationBarItem(icon: Icon(Icons.history_rounded), label: 'LEDGER'),
-          ],
-        ),
-      ),
+      theme: AppTheme.theme,
+      initialRoute: '/',
+      routes: {
+        '/': (_) => const SplashScreen(),
+        '/onboarding': (_) => const OnboardingScreen(),
+        '/login': (_) => const LoginScreen(),
+        '/otp': (_) => const OtpScreen(),
+        '/home': (_) => const MainNavigation(),
+        '/gold-loan': (_) => const GoldLoanScreen(),
+        '/apply-loan': (_) => const ApplyLoanScreen(),
+        '/pay-emi': (_) => const LoanStatusScreen(),
+        '/loan-status': (_) => const LoanStatusScreen(),
+        '/emi-calculator': (_) => const EmiCalculatorScreen(),
+        '/digital-gold': (_) => const DigitalGoldScreen(),
+        '/profile': (_) => const ProfileScreen(),
+        '/notifications': (_) => const NotificationsScreen(),
+        '/branches': (_) => const BranchesScreen(),
+      },
     );
   }
 }
