@@ -1,5 +1,5 @@
-name: alpha_hub_mobile
-description: A premium trading analytics mobile app for Trade Tips Pro.
+name: imuthoot_clone
+description: Muthoot Finance iMuthoot App Clone
 version: 1.0.0+1
 
 environment:
@@ -13,9 +13,9 @@ dependencies:
   google_fonts: ^6.1.0
   intl: ^0.18.1
   fl_chart: ^0.63.0
-  glassmorphism: ^3.0.0
   cupertino_icons: ^1.0.6
-  flutter_local_notifications: ^16.3.0
+  carousel_slider: ^4.2.1
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:
