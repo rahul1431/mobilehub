@@ -14,8 +14,12 @@ class AppTheme {
   // Semantic
   static const Color success  = Color(0xFF10B981);
   static const Color danger   = Color(0xFFFF4B5C);
+  static const Color error    = Color(0xFFFF4B5C); // alias for danger
   static const Color warning  = Color(0xFFF59E0B); // overdue / pending
   static const Color gold     = Color(0xFFFFD700); // auction winner highlight
+
+  // Surfaces
+  static const Color surface  = Color(0xFF0D1627); // alias for cardBg
 
   // Text
   static const Color textMuted = Color(0xFF8E9BAE);

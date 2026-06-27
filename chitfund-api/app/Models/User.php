@@ -28,6 +28,8 @@ class User extends Authenticatable
     public function payments()       { return $this->hasMany(Payment::class, 'member_id'); }
     public function kycDocuments()   { return $this->hasMany(KycDocument::class, 'member_id'); }
     public function subscription()   { return $this->hasOne(ProviderSubscription::class)->latestOfMany(); }
+    public function penaltyRule()    { return $this->hasOne(PenaltyRule::class, 'provider_id'); }
+    public function agents()         { return $this->hasMany(Agent::class, 'provider_id'); }
 
     // Helpers
     public function isSuperAdmin()  { return $this->role === 'super_admin'; }

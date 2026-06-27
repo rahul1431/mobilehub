@@ -4,6 +4,7 @@ import 'core/api_client.dart';
 import 'core/app_theme.dart';
 import 'core/router.dart';
 import 'providers/auth_provider.dart';
+import 'providers/admin_provider.dart';
 import 'services/notification_service.dart';
 
 void main() async {
@@ -40,6 +41,7 @@ class _ApnaSavingAppState extends State<ApnaSavingApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<AuthProvider>.value(value: _authProvider),
+        ChangeNotifierProvider<AdminProvider>(create: (_) => AdminProvider()),
       ],
       child: MaterialApp.router(
         title: 'Apna Saving',
