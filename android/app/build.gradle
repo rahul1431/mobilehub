@@ -43,11 +43,12 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.yoghub.alpha_hub_mobile"
-        minSdkVersion flutter.minSdkVersion
+        applicationId "com.apnasaving.app"
+        minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
     }
 
     buildTypes {

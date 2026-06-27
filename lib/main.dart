@@ -1,67 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'core/api_client.dart';
 import 'core/app_theme.dart';
-import 'screens/dashboard_screen.dart';
-import 'screens/insights_screen.dart';
-import 'screens/ledger_screen.dart';
+import 'core/router.dart';
+import 'providers/auth_provider.dart';
 import 'services/notification_service.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  ApiClient.initialize();
   LocalNotificationService.initialize();
-  runApp(const AlphaHubApp());
+  runApp(const ApnaSavingApp());
 }
 
-class AlphaHubApp extends StatelessWidget {
-  const AlphaHubApp({super.key});
+class ApnaSavingApp extends StatefulWidget {
+  const ApnaSavingApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Alpha Hub Mobile',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.darkTheme,
-      home: const MainNavigation(),
-    );
+  State<ApnaSavingApp> createState() => _ApnaSavingAppState();
+}
+
+class _ApnaSavingAppState extends State<ApnaSavingApp> {
+  late final AuthProvider _authProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    _authProvider = AuthProvider()..checkAuthStatus();
   }
-}
-
-class MainNavigation extends StatefulWidget {
-  const MainNavigation({super.key});
 
   @override
-  State<MainNavigation> createState() => _MainNavigationState();
-}
-
-class _MainNavigationState extends State<MainNavigation> {
-  int _selectedIndex = 0;
-
-  final List<Widget> _screens = [
-    const DashboardScreen(),
-    const InsightsScreen(),
-    const LedgerScreen(),
-  ];
+  void dispose() {
+    _authProvider.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _screens[_selectedIndex],
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          border: Border(top: BorderSide(color: Colors.white.withOpacity(0.05))),
-        ),
-        child: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          onTap: (index) => setState(() => _selectedIndex = index),
-          backgroundColor: AppTheme.bgMain,
-          selectedItemColor: AppTheme.primary,
-          unselectedItemColor: AppTheme.textMuted,
-          type: BottomNavigationBarType.fixed,
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.dashboard_rounded), label: 'HUB'),
-            BottomNavigationBarItem(icon: Icon(Icons.analytics_rounded), label: 'INSIGHTS'),
-            BottomNavigationBarItem(icon: Icon(Icons.history_rounded), label: 'LEDGER'),
-          ],
-        ),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AuthProvider>.value(value: _authProvider),
+      ],
+      child: MaterialApp.router(
+        title: 'Apna Saving',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.darkTheme,
+        routerConfig: AppRouter.build(_authProvider),
       ),
     );
   }
