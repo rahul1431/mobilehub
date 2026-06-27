@@ -5,6 +5,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class NotificationLog extends Model
 {
+    protected $table = 'notifications_log';
+
     protected $fillable = ['user_id', 'channel', 'message_type', 'payload', 'status'];
 
     protected $casts = ['payload' => 'array'];

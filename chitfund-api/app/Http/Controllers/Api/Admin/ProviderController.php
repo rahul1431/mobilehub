@@ -3,6 +3,8 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\GroupMembership;
+use App\Models\ProviderSubscription;
+use App\Models\SubscriptionPlan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -39,6 +41,7 @@ class ProviderController extends Controller
         $request->validate([
             'phone'     => 'required|string|min:10|max:15',
             'full_name' => 'nullable|string|max:150',
+            'plan_id'   => 'nullable|exists:subscription_plans,id',
         ]);
 
         $provider = User::updateOrCreate(
@@ -52,7 +55,19 @@ class ProviderController extends Controller
             ]
         );
 
-        return response()->json(['success' => true, 'data' => $provider], 201);
+        if ($request->plan_id) {
+            ProviderSubscription::updateOrCreate(
+                ['user_id' => $provider->id],
+                [
+                    'plan_id'    => $request->plan_id,
+                    'status'     => 'active',
+                    'starts_at'  => now(),
+                    'expires_at' => now()->addYear(),
+                ]
+            );
+        }
+
+        return response()->json(['success' => true, 'data' => $provider->load('subscription.plan')], 201);
     }
 
     public function show(User $provider)

@@ -7,7 +7,7 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('subscription_plans', function (Blueprint $table) {
             $table->id();
-            $table->string('name');               // Bronze, Silver, Gold
+            $table->string('name')->unique();      // Bronze, Silver, Gold
             $table->decimal('price', 10, 2);      // 499, 999, 2499
             $table->integer('group_limit');        // 5, 15, -1 (unlimited)
             $table->integer('member_limit');       // 100, 500, -1 (unlimited)
