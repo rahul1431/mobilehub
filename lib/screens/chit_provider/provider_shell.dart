@@ -7,6 +7,7 @@ import 'tabs/groups_tab.dart';
 import 'tabs/members_tab.dart';
 import 'tabs/calculator_tab.dart';
 import 'tabs/chit_builder_tab.dart';
+import 'collections/collections_screen.dart';
 
 class ProviderShell extends StatefulWidget {
   const ProviderShell({super.key});
@@ -47,6 +48,13 @@ class _ProviderShellState extends State<ProviderShell> {
           ],
         ),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.receipt_long_rounded, color: AppTheme.textMuted),
+            tooltip: 'Collections',
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const CollectionsScreen()),
+            ),
+          ),
           IconButton(
             icon: const Icon(Icons.logout_rounded, color: AppTheme.textMuted),
             onPressed: () => context.read<AuthProvider>().logout(),
