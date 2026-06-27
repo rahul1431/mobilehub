@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Api\Member;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\GenerateReportJob;
 use App\Models\Dividend;
 use App\Models\Payment;
 use Illuminate\Http\Request;
@@ -49,7 +50,12 @@ class PassbookController extends Controller
 
     public function exportPdf(Request $request)
     {
-        // PDF generation will be implemented in Phase 8
-        return response()->json(['success' => false, 'message' => 'PDF export coming soon.'], 501);
+        $userId = $request->user()->id;
+        GenerateReportJob::dispatch('passbook', $userId, $userId);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Your passbook PDF is being generated. You will receive a notification when it\'s ready.',
+        ]);
     }
 }

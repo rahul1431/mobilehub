@@ -1,6 +1,7 @@
 <?php
 namespace App\Console;
 
+use App\Jobs\AutoDebitJob;
 use App\Jobs\SendNotificationJob;
 use App\Models\Cycle;
 use App\Models\Payment;
@@ -57,6 +58,13 @@ class Kernel extends ConsoleKernel
                 }
             }
         })->dailyAt('10:00')->name('apply-penalties');
+
+        // Daily at 8 AM: trigger auto-debit for cycles due today (mandate members)
+        $schedule->call(function () {
+            Cycle::whereIn('status', ['open', 'auction'])
+                ->whereDate('due_date', now()->toDateString())
+                ->each(fn($cycle) => AutoDebitJob::dispatch($cycle->id));
+        })->dailyAt('08:00')->name('auto-debit-trigger');
 
         // Clear expired OTPs hourly
         $schedule->call(function () {
