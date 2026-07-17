@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../../core/app_theme.dart';
 import '../../../providers/auth_provider.dart';
+import '../../../providers/locale_provider.dart';
 import '../../../widgets/glass_card.dart';
 
 class ProfileTab extends StatelessWidget {
@@ -11,7 +13,8 @@ class ProfileTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final profile = context.watch<AuthProvider>().profile;
+    final profile        = context.watch<AuthProvider>().profile;
+    final localeProvider = context.watch<LocaleProvider>();
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
@@ -109,6 +112,14 @@ class ProfileTab extends StatelessWidget {
                           );
                         },
                       ),
+                      IconButton(
+                        icon: const Icon(Icons.share_rounded, color: AppTheme.primary),
+                        onPressed: () => Share.share(
+                          'Join me on Apna Saving — India\'s smartest chit fund app!\n'
+                          'Use my referral code: ${profile!.referralCode}\n'
+                          'Download now: https://apnasaving.app',
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 4),
@@ -117,6 +128,44 @@ class ProfileTab extends StatelessWidget {
                 ],
               ),
             ),
+
+          const SizedBox(height: 16),
+
+          // Language selector
+          GlassCard(
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              const Text('Language', style: TextStyle(color: AppTheme.textMuted, fontSize: 12)),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: LocaleProvider.supportedLocales.map((loc) {
+                  final selected = localeProvider.locale.languageCode == loc.languageCode;
+                  return GestureDetector(
+                    onTap: () => localeProvider.setLocale(loc),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: selected ? AppTheme.primary.withOpacity(0.2) : Colors.transparent,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: selected ? AppTheme.primary : Colors.white12,
+                        ),
+                      ),
+                      child: Text(
+                        LocaleProvider.langLabel(loc.languageCode),
+                        style: TextStyle(
+                          color: selected ? AppTheme.primary : AppTheme.textMuted,
+                          fontSize: 12,
+                          fontWeight: selected ? FontWeight.bold : FontWeight.normal,
+                        ),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ]),
+          ),
 
           const SizedBox(height: 24),
 
@@ -133,9 +182,7 @@ class ProfileTab extends StatelessWidget {
             icon: Icons.people_outline_rounded,
             label: 'My Referrals',
             subtitle: 'Track who you referred',
-            onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Referrals — coming in Phase 9.')),
-            ),
+            onTap: () => context.push('/member/referrals'),
           ),
           _menuItem(
             context,

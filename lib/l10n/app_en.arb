@@ -1,0 +1,64 @@
+{
+  "@@locale": "en",
+  "appName": "Apna Saving",
+  "@appName": { "description": "Application name" },
+
+  "dashboard": "Dashboard",
+  "payments": "Payments",
+  "passbook": "Passbook",
+  "groups": "Groups",
+  "profile": "Profile",
+
+  "myGroups": "My Groups",
+  "myPayments": "My Payments",
+  "myPassbook": "My Passbook",
+
+  "kycStatus": "KYC Status",
+  "kycVerified": "Verified",
+  "kycPending": "Pending Verification",
+  "completeKyc": "Complete KYC",
+
+  "totalInvested": "Total Invested",
+  "totalDividends": "Total Dividends",
+  "nextDue": "Next Due",
+  "noDuePayments": "No Payments Due",
+
+  "payNow": "Pay Now",
+  "paid": "Paid",
+  "pending": "Pending",
+  "failed": "Failed",
+
+  "exportPdf": "Export PDF",
+  "passbookExportStarted": "Passbook PDF generation started. You will be notified when ready.",
+
+  "referralCode": "Your Referral Code",
+  "referralTagline": "Share this code to earn rewards",
+  "codeCopied": "Referral code copied!",
+  "shareReferral": "Share Referral",
+
+  "myDocuments": "My Documents",
+  "myReferrals": "My Referrals",
+  "helpSupport": "Help & Support",
+  "logout": "Logout",
+  "logoutConfirm": "Are you sure you want to logout?",
+  "cancel": "Cancel",
+
+  "bidPlaced": "Bid placed successfully!",
+  "minBid": "Minimum bid is ₹{amount} (70% of pot)",
+  "@minBid": {
+    "placeholders": {
+      "amount": { "type": "String" }
+    }
+  },
+  "liveAuction": "Live Auction",
+  "winnerAnnounced": "Winner Announced",
+  "youWon": "You Won!",
+  "congratulations": "Congratulations!",
+
+  "language": "Language",
+  "selectLanguage": "Select Language",
+  "english": "English",
+  "hindi": "Hindi",
+  "tamil": "Tamil",
+  "telugu": "Telugu"
+}

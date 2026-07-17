@@ -107,6 +107,14 @@ class AuthController extends Controller
         return response()->json(['success' => true]);
     }
 
+    // PUT /api/auth/preferred-lang
+    public function updatePreferredLang(Request $request): JsonResponse
+    {
+        $request->validate(['lang' => 'required|in:en,hi,ta,te']);
+        $request->user()->update(['preferred_lang' => $request->lang]);
+        return response()->json(['success' => true]);
+    }
+
     private function formatUser(User $user): array
     {
         return [

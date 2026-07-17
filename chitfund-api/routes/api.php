@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\Member\PassbookController;
 use App\Http\Controllers\Api\Member\BidController;
 use App\Http\Controllers\Api\Member\PaymentController;
 use App\Http\Controllers\Api\Member\KycController;
+use App\Http\Controllers\Api\Member\ReferralController;
 use App\Http\Controllers\Api\Webhook\RazorpayWebhookController;
 use App\Http\Controllers\Api\Webhook\DigioWebhookController;
 use Illuminate\Support\Facades\Route;
@@ -34,6 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/auth/me',              [AuthController::class, 'me']);
     Route::post('/auth/logout',         [AuthController::class, 'logout']);
     Route::put('/auth/fcm-token',       [AuthController::class, 'updateFcmToken']);
+    Route::put('/auth/preferred-lang',  [AuthController::class, 'updatePreferredLang']);
 
     // ── Super Admin ──────────────────────────────────────────────────────────
     Route::middleware('role:super_admin')->prefix('admin')->group(function () {
@@ -78,6 +80,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/kyc/status',         [KycController::class, 'status']);
         Route::post('/kyc/start-aadhaar', [KycController::class, 'startAadhaar']);
         Route::post('/kyc/verify-pan',    [KycController::class, 'verifyPan']);
+
+        Route::get('/referrals',          [ReferralController::class, 'index']);
     });
 });
 

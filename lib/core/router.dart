@@ -11,6 +11,7 @@ import '../screens/onboarding/aadhaar_verify_screen.dart';
 import '../screens/onboarding/pan_verify_screen.dart';
 import '../screens/onboarding/agreement_sign_screen.dart';
 import '../screens/chit_member/documents/documents_screen.dart';
+import '../screens/chit_member/referrals/referrals_screen.dart';
 import '../screens/chit_member/auction/auction_screen.dart';
 import '../screens/chit_member/auction/lottery_result_screen.dart';
 
@@ -67,7 +68,8 @@ class AppRouter {
         ),
 
         // Member sub-screens (pushed on top of shell)
-        GoRoute(path: '/member/documents', builder: (_, __) => const DocumentsScreen()),
+        GoRoute(path: '/member/documents',  builder: (_, __) => const DocumentsScreen()),
+        GoRoute(path: '/member/referrals',  builder: (_, __) => const ReferralsScreen()),
         GoRoute(
           path: '/member/auction',
           builder: (_, state) {
