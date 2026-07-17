@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'core/api_client.dart';
 import 'core/app_theme.dart';
@@ -15,6 +16,12 @@ import 'services/notification_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Hive offline cache
+  await Hive.initFlutter();
+  await Hive.openBox<String>('passbook_cache');
+  await Hive.openBox<String>('groups_cache');
+
   ApiClient.initialize();
   LocalNotificationService.initialize();
 
@@ -26,6 +33,35 @@ void main() async {
   } catch (_) {
     // Firebase not configured yet — push notifications disabled until setup
   }
+
+  // Global error boundary — render a minimal error card instead of crashing
+  ErrorWidget.builder = (FlutterErrorDetails details) {
+    return Material(
+      color: AppTheme.bgMain,
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            const Icon(Icons.error_outline_rounded,
+                color: AppTheme.error, size: 48),
+            const SizedBox(height: 16),
+            const Text('Something went wrong',
+                style: TextStyle(
+                    color: Colors.white, fontSize: 18,
+                    fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            Text(
+              details.exceptionAsString(),
+              textAlign: TextAlign.center,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(color: AppTheme.textMuted, fontSize: 12),
+            ),
+          ]),
+        ),
+      ),
+    );
+  };
 
   runApp(const ApnaSavingApp());
 }

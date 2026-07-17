@@ -6,6 +6,7 @@ import '../../../core/app_theme.dart';
 import '../../../models/payment_model.dart';
 import '../../../providers/auth_provider.dart';
 import '../../../providers/member_provider.dart';
+import '../../../services/biometric_service.dart';
 import '../../../widgets/glass_card.dart';
 
 class PaymentsTab extends StatefulWidget {
@@ -43,6 +44,22 @@ class _PaymentsTabState extends State<PaymentsTab> {
 
   Future<void> _initiatePayment(PaymentModel payment) async {
     if (_checkoutOpen) return;
+
+    // Require biometric/PIN before opening Razorpay
+    final authed = await BiometricService.authenticateForPayment();
+    if (!authed) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Authentication failed. Payment cancelled.'),
+            backgroundColor: AppTheme.error,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+      return;
+    }
+
     setState(() {
       _pendingPaymentId = payment.id;
       _checkoutOpen = true;

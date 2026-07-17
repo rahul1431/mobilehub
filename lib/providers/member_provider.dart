@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import '../models/payment_model.dart';
 import '../services/member_api_service.dart';
 
@@ -90,9 +92,12 @@ class MemberProvider extends ChangeNotifier {
   Future<void> loadMyGroups() async {
     groupsLoading = true;
     groupsError = null;
+    // Serve cached data immediately while fetching
+    _loadGroupsFromCache();
     notifyListeners();
     try {
       myGroups = await _svc.getMyGroups();
+      _saveGroupsToCache(myGroups);
     } catch (e) {
       groupsError = _msg(e);
     } finally {
@@ -101,22 +106,60 @@ class MemberProvider extends ChangeNotifier {
     }
   }
 
+  void _loadGroupsFromCache() {
+    try {
+      final box  = Hive.box<String>('groups_cache');
+      final json = box.get('my_groups');
+      if (json != null) {
+        final decoded = jsonDecode(json);
+        if (decoded is List) myGroups = decoded;
+      }
+    } catch (_) {}
+  }
+
+  void _saveGroupsToCache(List<dynamic> data) {
+    try {
+      Hive.box<String>('groups_cache').put('my_groups', jsonEncode(data));
+    } catch (_) {}
+  }
+
   // ── Passbook ───────────────────────────────────────────────────────────────
 
   Future<void> loadPassbook() async {
     passbookLoading = true;
     passbookError = null;
+    // Serve cached data immediately
+    _loadPassbookFromCache();
     notifyListeners();
     try {
       final result = await _svc.getPassbook();
       ledger = result['data'] as List? ?? [];
       passbookSummary = result['summary'] as Map<String, dynamic>?;
+      _savePassbookToCache(result);
     } catch (e) {
       passbookError = _msg(e);
     } finally {
       passbookLoading = false;
       notifyListeners();
     }
+  }
+
+  void _loadPassbookFromCache() {
+    try {
+      final box  = Hive.box<String>('passbook_cache');
+      final json = box.get('passbook');
+      if (json != null) {
+        final decoded = jsonDecode(json) as Map<String, dynamic>;
+        ledger          = decoded['data'] as List? ?? [];
+        passbookSummary = decoded['summary'] as Map<String, dynamic>?;
+      }
+    } catch (_) {}
+  }
+
+  void _savePassbookToCache(Map<String, dynamic> data) {
+    try {
+      Hive.box<String>('passbook_cache').put('passbook', jsonEncode(data));
+    } catch (_) {}
   }
 
   Future<String?> requestPassbookPdf() async {
