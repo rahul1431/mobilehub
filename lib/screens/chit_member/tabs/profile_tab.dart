@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../core/app_theme.dart';
 import '../../../providers/auth_provider.dart';
@@ -69,11 +70,7 @@ class ProfileTab extends StatelessWidget {
                 const Spacer(),
                 if (profile?.isKycDone != true)
                   TextButton(
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('KYC coming in next update.')),
-                      );
-                    },
+                    onPressed: () => context.push('/kyc'),
                     child: const Text('Complete', style: TextStyle(color: AppTheme.primary)),
                   ),
               ],
@@ -129,9 +126,7 @@ class ProfileTab extends StatelessWidget {
             icon: Icons.description_rounded,
             label: 'My Documents',
             subtitle: 'KYC & signed agreements',
-            onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Documents — coming in Phase 7.')),
-            ),
+            onTap: () => context.push('/member/documents'),
           ),
           _menuItem(
             context,

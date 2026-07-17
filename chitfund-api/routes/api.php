@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\Member\DashboardController;
 use App\Http\Controllers\Api\Member\PassbookController;
 use App\Http\Controllers\Api\Member\BidController;
 use App\Http\Controllers\Api\Member\PaymentController;
+use App\Http\Controllers\Api\Member\KycController;
 use App\Http\Controllers\Api\Webhook\RazorpayWebhookController;
 use App\Http\Controllers\Api\Webhook\DigioWebhookController;
 use Illuminate\Support\Facades\Route;
@@ -73,5 +74,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/payments',      [PaymentController::class, 'index']);
         Route::post('/payments/create-order', [PaymentController::class, 'createOrder']);
         Route::post('/payments/confirm',      [PaymentController::class, 'confirm']);
+
+        Route::get('/kyc/status',         [KycController::class, 'status']);
+        Route::post('/kyc/start-aadhaar', [KycController::class, 'startAadhaar']);
+        Route::post('/kyc/verify-pan',    [KycController::class, 'verifyPan']);
     });
 });
+
+// KYC redirect-back (no auth — Digio redirects the user's browser here)
+Route::get('/member/kyc/callback', [KycController::class, 'callback']);
